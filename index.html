@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colmena Café – Menu</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --honey: #F2A900;
+    --honey-dark: #C98600;
+    --brown: #3B2412;
+    --cream: #FFF8EC;
+    --card: #FFFFFF;
+    --muted: #8A7560;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--cream);
+    color: var(--brown);
+    max-width: 640px;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+  header {
+    background: var(--brown);
+    color: var(--cream);
+    text-align: center;
+    padding: 40px 16px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 20% 30%, rgba(242,169,0,.25) 0 40px, transparent 41px),
+                      radial-gradient(circle at 85% 70%, rgba(242,169,0,.18) 0 60px, transparent 61px);
+  }
+  .logo { font-size: 48px; position: relative; }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    letter-spacing: 2px;
+    color: var(--honey);
+    position: relative;
+  }
+  .tagline { font-weight: 300; opacity: .85; margin-top: 4px; position: relative; }
+
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--cream);
+    display: flex; gap: 8px;
+    overflow-x: auto;
+    padding: 12px 16px;
+    border-bottom: 1px solid #EADBC4;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  nav button {
+    flex-shrink: 0;
+    border: 1.5px solid var(--honey);
+    background: transparent;
+    color: var(--brown);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-family: inherit; font-size: 14px; font-weight: 500;
+    cursor: pointer;
+    transition: .2s;
+  }
+  nav button.active { background: var(--honey); color: var(--brown); }
+
+  main { padding: 8px 16px 40px; }
+  section { padding-top: 24px; scroll-margin-top: 64px; }
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .item {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    display: flex; justify-content: space-between; gap: 12px;
+    box-shadow: 0 2px 8px rgba(59,36,18,.06);
+  }
+  .item h3 { font-size: 16px; font-weight: 600; }
+  .item p { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .badge {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    background: var(--honey); color: var(--brown);
+    padding: 1px 8px; border-radius: 999px; margin-left: 6px; vertical-align: middle;
+  }
+  .price {
+    font-weight: 600; color: var(--honey-dark);
+    white-space: nowrap; font-size: 16px;
+  }
+  footer {
+    background: var(--brown); color: var(--cream);
+    text-align: center; padding: 28px 16px; font-size: 14px; line-height: 1.8;
+  }
+  footer a { color: var(--honey); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🐝</div>
+  <h1>COLMENA</h1>
+  <p class="tagline">Café · Douceurs · Bonne humeur</p>
+</header>
+
+<nav id="nav"></nav>
+<main id="menu"></main>
+
+<footer>
+  📍 Votre adresse ici<br>
+  🕗 Ouvert tous les jours · 7h00 – 23h00<br>
+  📞 <a href="tel:+212600000000">06 00 00 00 00</a> · 📷 <a href="#">@colmena.cafe</a><br>
+  <small style="opacity:.6">Wi‑Fi gratuit · Prix en dirhams (DH)</small>
+</footer>
+
+<script>
+// ✏️ Pour modifier le menu, changez seulement cette liste
+const MENU = [
+  { cat: "Cafés", icon: "☕", items: [
+    ["Espresso", "Court et intense", 12],
+    ["Café noisette", "Espresso et une touche de lait", 13],
+    ["Cappuccino", "Mousse de lait onctueuse", 18],
+    ["Latte au miel", "Notre signature au miel de montagne", 22, "Signature"],
+    ["Café glacé", "Servi frais avec glaçons", 20],
+  ]},
+  { cat: "Thés & Boissons chaudes", icon: "🍵", items: [
+    ["Thé à la menthe", "Théière traditionnelle", 12],
+    ["Thé aux herbes", "Verveine, chiba ou louiza", 14],
+    ["Chocolat chaud", "Chocolat fondu et lait", 20],
+  ]},
+  { cat: "Jus & Smoothies", icon: "🥤", items: [
+    ["Jus d'orange", "Pressé minute", 15],
+    ["Panaché", "Fruits de saison mixés", 22],
+    ["Smoothie Colmena", "Banane, dattes, miel et lait", 28, "Nouveau"],
+    ["Avocat", "Avocat, lait et fruits secs", 25],
+  ]},
+  { cat: "Petit‑déjeuner", icon: "🍳", items: [
+    ["Petit‑déj Marocain", "Msemen, baghrir, amlou, miel, thé ou café, jus", 45],
+    ["Petit‑déj Continental", "Croissant, pain, beurre, confiture, café, jus", 40],
+    ["Omelette", "Nature, fromage ou khlii", 25],
+  ]},
+  { cat: "Pâtisseries", icon: "🥐", items: [
+    ["Croissant", "Pur beurre", 8],
+    ["Pain au chocolat", "", 9],
+    ["Gâteau au miel", "Fait maison", 18, "Signature"],
+    ["Cheesecake", "Coulis de fruits rouges", 25],
+  ]},
+  { cat: "Snacks", icon: "🥪", items: [
+    ["Panini poulet", "Poulet, fromage, crudités", 30],
+    ["Sandwich thon", "Thon, œuf, olives", 25],
+    ["Crêpe sucrée", "Nutella, miel ou amlou", 20],
+  ]},
+];
+
+const nav = document.getElementById("nav");
+const menu = document.getElementById("menu");
+
+MENU.forEach((c, i) => {
+  const id = "cat" + i;
+  nav.insertAdjacentHTML("beforeend", `<button data-id="${id}">${c.icon} ${c.cat}</button>`);
+  menu.insertAdjacentHTML("beforeend", `
+    <section id="${id}">
+      <h2>${c.icon} ${c.cat}</h2>
+      ${c.items.map(([name, desc, price, badge]) => `
+        <div class="item">
+          <div>
+            <h3>${name}${badge ? `<span class="badge">${badge}</span>` : ""}</h3>
+            ${desc ? `<p>${desc}</p>` : ""}
+          </div>
+          <div class="price">${price} DH</div>
+        </div>`).join("")}
+    </section>`);
+});
+
+const buttons = nav.querySelectorAll("button");
+buttons.forEach(b => b.onclick = () =>
+  document.getElementById(b.dataset.id).scrollIntoView({ behavior: "smooth" }));
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      buttons.forEach(b => {
+        const on = b.dataset.id === e.target.id;
+        b.classList.toggle("active", on);
+        if (on) b.scrollIntoView({ inline: "center", block: "nearest" });
+      });
+    }
+  });
+}, { rootMargin: "-40% 0px -55% 0px" });
+document.querySelectorAll("section").forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
