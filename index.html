@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Colmena Café – Menu</title>
+<title>Menu</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -107,22 +107,32 @@
 <body>
 
 <header>
-  <div class="logo">🐝</div>
-  <h1>COLMENA</h1>
-  <p class="tagline">Café · Douceurs · Bonne humeur</p>
+  <div class="logo" id="logo"></div>
+  <h1 id="name"></h1>
+  <p class="tagline" id="tagline"></p>
 </header>
 
 <nav id="nav"></nav>
 <main id="menu"></main>
 
-<footer>
-  📍 Votre adresse ici<br>
-  🕗 Ouvert tous les jours · 7h00 – 23h00<br>
-  📞 <a href="tel:+212600000000">06 00 00 00 00</a> · 📷 <a href="#">@colmena.cafe</a><br>
-  <small style="opacity:.6">Wi‑Fi gratuit · Prix en dirhams (DH)</small>
-</footer>
+<footer id="footer"></footer>
 
 <script>
+// ✏️ Infos du café : changez ces valeurs pour un nouveau client
+const CAFE = {
+  name: "COLMENA",
+  title: "Colmena Café",
+  logo: "🐝",
+  tagline: "Café · Douceurs · Bonne humeur",
+  address: "Votre adresse ici",
+  hours: "Ouvert tous les jours · 7h00 – 23h00",
+  phone: "06 00 00 00 00",
+  instagram: "colmena.cafe",
+  note: "Wi‑Fi gratuit · Prix en dirhams (DH)",
+  currency: "DH",
+  colors: { main: "#F2A900", mainDark: "#C98600", dark: "#3B2412", light: "#FFF8EC" },
+};
+
 // ✏️ Pour modifier le menu, changez seulement cette liste
 const MENU = [
   { cat: "Cafés", icon: "☕", items: [
@@ -161,6 +171,22 @@ const MENU = [
   ]},
 ];
 
+const root = document.documentElement.style;
+root.setProperty("--honey", CAFE.colors.main);
+root.setProperty("--honey-dark", CAFE.colors.mainDark);
+root.setProperty("--brown", CAFE.colors.dark);
+root.setProperty("--cream", CAFE.colors.light);
+document.title = `${CAFE.title} – Menu`;
+document.getElementById("logo").textContent = CAFE.logo;
+document.getElementById("name").textContent = CAFE.name;
+document.getElementById("tagline").textContent = CAFE.tagline;
+document.getElementById("footer").innerHTML = `
+  📍 ${CAFE.address}<br>
+  🕗 ${CAFE.hours}<br>
+  📞 <a href="tel:+212${CAFE.phone.replace(/\D/g, "").replace(/^0/, "")}">${CAFE.phone}</a>
+  ${CAFE.instagram ? ` · 📷 <a href="https://instagram.com/${CAFE.instagram}">@${CAFE.instagram}</a>` : ""}<br>
+  <small style="opacity:.6">${CAFE.note}</small>`;
+
 const nav = document.getElementById("nav");
 const menu = document.getElementById("menu");
 
@@ -176,7 +202,7 @@ MENU.forEach((c, i) => {
             <h3>${name}${badge ? `<span class="badge">${badge}</span>` : ""}</h3>
             ${desc ? `<p>${desc}</p>` : ""}
           </div>
-          <div class="price">${price} DH</div>
+          <div class="price">${price} ${CAFE.currency}</div>
         </div>`).join("")}
     </section>`);
 });
